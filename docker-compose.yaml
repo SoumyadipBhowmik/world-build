@@ -1,0 +1,29 @@
+services:
+  scylladb:
+    image: scylladb/scylla:5.2
+    container_name: scylladb-world-lobby
+    ports:
+      - "9042:9042"  # CQL port
+      - "9160:9160"  # Thrift port (legacy)
+      - "10000:10000" # REST API
+    volumes:
+      - scylla_data:/var/lib/scylla
+      - ./priv/scylladb:/docker-entrypoint-initdb.d
+    environment:
+      - SCYLLA_CLUSTER_NAME=world_lobby_cluster
+    command: --seeds=127.0.0.1 --smp 1 --memory 512M --overprovisioned 1
+    healthcheck:
+      test: ["CMD-SHELL", "cqlsh -e 'describe cluster'"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - world_lobby_network
+
+volumes:
+  scylla_data:
+    driver: local
+
+networks:
+  world_lobby_network:
+    driver: bridge
