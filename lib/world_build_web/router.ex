@@ -20,10 +20,14 @@ defmodule WorldBuildWeb.Router do
     get "/", PageController, :home
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", WorldBuildWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", WorldBuildWeb do
+    pipe_through :api
+
+    post "/update_position", ApiController, :update_position
+    get "/health", ApiController, :health
+    post "/join", ApiController, :join_world
+    get "/world", ApiController, :world_state
+  end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:world_build, :dev_routes) do

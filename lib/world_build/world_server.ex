@@ -47,6 +47,29 @@ defmodule WorldBuild.WorldServer do
     {:ok, initial_state}
   end
 
+  def update_position(player_id, position) do
+    GenServer.cast(__MODULE__, {:update_position, player_id, position})
+  end
+
+  @impl true
+  def handle_cast({:update_position, player_id, position}, state) do
+    case Map.get(state.players, player_id) do
+      nil ->
+        # Player not found
+        {:noreply, state}
+
+      player ->
+        # Update player position
+        updated_player = %{player | position: position}
+        new_players = Map.put(state.players, player_id, updated_player)
+        new_state = %{state | players: new_players}
+
+        Logger.info("Updated position for #{player.username}: (#{position.x}, #{position.y})")
+
+        {:noreply, new_state}
+    end
+  end
+
   @impl true
   def handle_call({:join_player, username}, _from, state) do
     cond do
