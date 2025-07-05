@@ -36,9 +36,9 @@ defmodule WorldBuildWeb.ApiController do
   end
 
   def update_position(conn, %{"player_id" => player_id, "x" => x, "y" => y}) do
-  # Cast is asynchronous, so we always return success
-  WorldBuild.WorldServer.update_position(player_id, %{x: x, y: y})
-  json(conn, %{status: "success"})
-end
+    # Cast is asynchronous, so we always return success
+    WorldBuild.WorldServer.update_position(player_id, %{x: x, y: y})
+    json(conn, %{status: "success"})
+  end
 
 end

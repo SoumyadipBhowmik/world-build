@@ -8,7 +8,7 @@ defmodule WorldBuild.WorldServer do
 
   # Configuration
   @max_players 100
-  @spawn_position %{x: 0.0, y: 0.0}  # Center of big house
+  @spawn_position %{x: 500.0, y: 300.0}
 
   ## Client API (What other code calls)
 
